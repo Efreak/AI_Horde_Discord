@@ -184,7 +184,10 @@ export interface HordeStyleData {
     steps?: number,
     cfg_scale?: number
     loras?: {
-        name: string
+        name: string,
+        inject_trigger?: string
+        model?: number,
+        clip?: number
     }[]
 }
 

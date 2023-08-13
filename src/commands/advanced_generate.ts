@@ -200,6 +200,12 @@ const command_data = new SlashCommandBuilder()
                 .setDescription("The LORA to use for this request")
                 .setAutocomplete(true)
             )
+            command_data
+            .addStringOption(
+                new SlashCommandStringOption()
+                .setName("loraweight")
+                .setDescription("The LORA weight to use for the lora")
+            )
         }
     }
 
@@ -257,6 +263,8 @@ export default class extends Command {
         const karras = ctx.interaction.options.getBoolean("karras") ?? ctx.client.config.advanced_generate?.default?.karras ?? false
         const share_result = ctx.interaction.options.getBoolean("share_result") ?? ctx.client.config.advanced_generate?.default?.share
         const lora_id = ctx.interaction.options.getString("lora")
+        const lora_weight = ctx.interaction.options.getString("loraweight")
+        const lora_trigger = ctx.interaction.options.getString("inject_trigger")
         let img = ctx.interaction.options.getAttachment("source_image")
 
         const user_token = await ctx.client.getUserToken(ctx.interaction.user.id, ctx.database)
@@ -269,6 +277,8 @@ export default class extends Command {
             if(ctx.client.config.advanced?.dev) console.log(lora)
             if(!lora) return ctx.error({error: "A LORA ID from https://civitai.com/ has to be given", codeblock: false})
             if(lora.type !== "LORA") return ctx.error({error: "The given ID is not a LORA"})
+        } else if(lora_weight) {
+            return ctx.error({error: "LORA weight requires a LORA"})
         }
 
         if(party?.channel_id) return ctx.error({error: `You can only use ${await ctx.client.getSlashCommandTag("generate")} in parties`, codeblock: false})
@@ -360,7 +370,12 @@ export default class extends Command {
                 n: amount,
                 denoising_strength: denoise,
                 karras,
-                loras: lora_id ? [{name: lora_id}] : undefined
+                loras: lora_id ? [{
+                    name: lora_id,
+                    model: lora_weight ? lora_weight : 1,
+                    clip: 1,
+                    inject_trigger?: inject_trigger ? 'any' : undefined
+                }] : undefined
             },
             replacement_filter: ctx.client.config.advanced_generate.replacement_filter,
             nsfw: ctx.client.config.advanced_generate?.user_restrictions?.allow_nsfw,
