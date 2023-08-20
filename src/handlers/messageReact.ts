@@ -22,7 +22,7 @@ export async function handleMessageReact(reaction: PartialMessageReaction | Mess
         await u.send({
             embeds: [{
                 title: "Gifting Kudos",
-                description: `You tried gifting kudos to ${target_user.tag ?? "somebody"} but you are not logged in.\nTo gift kudos use /login.`,
+                description: `You tried gifting **${emoji.amount ?? 1}** kudos to ${target_user.tag ?? "somebody"} for [this message](${r.message.url}), but you are not logged in.\nTo gift kudos use /login.`,
                 color: Colors.Blue
             }]
         }).catch(console.error)
@@ -44,7 +44,7 @@ export async function handleMessageReact(reaction: PartialMessageReaction | Mess
                 await u.send({
                     embeds: [{
                         title: "Gifting Kudos",
-                        description: `The target user is currently not logged in.\nKudos will be transferred as soon as they log in.`,
+                        description: `Gifting **${emoji.amount ?? 1}** kudos failed for [this message](${r.message.url}). **${target_user.tag}** is currently not logged in.\nKudos will 2be transferred as soon as they log in.`,
                         color: Colors.Red
                     }]
                 }).catch(console.error)
@@ -62,7 +62,7 @@ export async function handleMessageReact(reaction: PartialMessageReaction | Mess
         await u.send({
             embeds: [{
                 title: "Gifting Kudos",
-                description: `Gifting Kudos failed.`,
+                description: `Gifting **${emoji.amount ?? 1}** kudos to **${target_user?.tag}** failed for [this message](${r.message.url}).`,
                 color: Colors.Red
             }]
         }).catch(console.error)
@@ -73,7 +73,7 @@ export async function handleMessageReact(reaction: PartialMessageReaction | Mess
     await u.send({
         embeds: [{
             title: "Gifting Kudos",
-            description: `Successfully gifted ${target_user?.tag ?? "somebody"} ${emoji.amount ?? 1} Kudos.`,
+            description: `Successfully gifted ${target_user?.tag ?? "somebody"} ${emoji.amount ?? 1} Kudos for [this message](${r.message.url}).`,
             color: Colors.Green
         }]
     }).catch(console.error)
