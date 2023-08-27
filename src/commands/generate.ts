@@ -173,7 +173,7 @@ export default class extends Command {
             if(ctx.client.config.advanced?.dev) {
                 console.log(party.wordlist)
             }
-            if(!party.wordlist.every(w => prompt.toLowerCase().includes(w))) return ctx.error({error: "Your prompt does not include all required words"})
+            if(!party.wordlist.every(w => (w.includes('###') ? prompt : prompt.split('###')[0]).toLowerCase().includes(w))) return ctx.error({error: `Your prompt does not include all required words\n> (\u0060${party.wordlist.join("\u0060, \u0060")}`})
         }
 
         if(keep_ratio && img?.width && img?.height) {
