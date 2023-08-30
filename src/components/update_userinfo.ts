@@ -1,41 +1,19 @@
-import { ButtonBuilder, Colors, EmbedBuilder, SlashCommandBooleanOption, SlashCommandBuilder, SlashCommandIntegerOption, SlashCommandUserOption } from "discord.js";
-import { Command } from "../classes/command";
-import { CommandContext } from "../classes/commandContext";
+import { ButtonBuilder, Colors, EmbedBuilder} from "discord.js";
+import { Component } from "../classes/component";
+import { ComponentContext } from "../classes/componentContext";
 import { UserDetails } from "@zeldafan0225/ai_horde";
 
-const command_data = new SlashCommandBuilder()
-    .setName("userinfo")
-    .setDMPermission(false)
-    .setDescription(`Shows information on your ai horde account`)
-    .addUserOption(
-        new SlashCommandUserOption()
-        .setName("discord_user")
-        .setDescription("The discord user to view")
-        .setRequired(false)
-    )
-    .addIntegerOption(
-        new SlashCommandIntegerOption()
-        .setName("horde_user_id")
-        .setDescription("The ID of the horde user to view")
-        .setRequired(false)
-    )
-    .addBooleanOption(
-        new SlashCommandBooleanOption()
-        .setName("ephemeral")
-        .setDescription("When set to true this message will only be visible to you")
-        .setRequired(false)
-    )
 
-export default class extends Command {
+export default class extends Component {
     constructor() {
         super({
-            name: "userinfo",
-            command_data: command_data.toJSON(),
+            name: "update_userinfo",
             staff_only: false,
+            regex: /update_userinfo/
         })
     }
 
-    override async run(ctx: CommandContext): Promise<any> {
+    override async run(ctx: ComponentContext<ComponentType.SelectMenu>): Promise<any> {
         if(!ctx.database) return ctx.error({error: "The database is disabled. This action requires a database."})
 
         const add_token_button = new ButtonBuilder({

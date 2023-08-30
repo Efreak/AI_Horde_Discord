@@ -1,30 +1,19 @@
-import { ButtonBuilder, Colors, EmbedBuilder, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
-import { AutocompleteContext } from "../classes/autocompleteContext";
-import { Command } from "../classes/command";
-import { CommandContext } from "../classes/commandContext";
+import { ButtonBuilder, Colors, EmbedBuilder} from "discord.js";
+import { Component } from "../classes/component";
+import { ComponentContext } from "../classes/componentContext";
+import { UserDetails } from "@zeldafan0225/ai_horde";
 
-const command_data = new SlashCommandBuilder()
-    .setName("team")
-    .setDMPermission(false)
-    .setDescription(`Shows information on a team`)
-    .addStringOption(
-        new SlashCommandStringOption()
-        .setName("query")
-        .setDescription("The ID or Name of the team")
-        .setRequired(true)
-        .setAutocomplete(true)
-    )
 
-export default class extends Command {
+export default class extends Component {
     constructor() {
         super({
-            name: "team",
-            command_data: command_data.toJSON(),
+            name: "update_team",
             staff_only: false,
+            regex: /update_team/
         })
     }
 
-    override async run(ctx: CommandContext): Promise<any> {
+    override async run(ctx: ComponentContext<ComponentType.SelectMenu>): Promise<any> {
         const query = ctx.interaction.options.getString("query")
         const teams = await ctx.ai_horde_manager.getTeams()
         const team = teams.find(t => t.id?.toLowerCase() === query?.toLowerCase() || t.name?.toLowerCase() === query?.toLowerCase())
