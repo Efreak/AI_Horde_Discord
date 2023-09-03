@@ -275,7 +275,6 @@ export default class extends Command {
         const keep_ratio = ctx.interaction.options.getBoolean("keep_original_ratio") ?? ctx.client.config.advanced_generate?.default?.keep_original_ratio ?? true
         const karras = ctx.interaction.options.getBoolean("karras") ?? ctx.client.config.advanced_generate?.default?.karras ?? false
         const share_result = ctx.interaction.options.getBoolean("share_result") ?? ctx.client.config.advanced_generate?.default?.share
-        const lora_id = ctx.interaction.options.getString("lora")
         const ti_raw = ctx.interaction.options.getString("textual_inversion") ?? ctx.client.config.advanced_generate.default?.tis
         const hires_fix = ctx.interaction.options.getBoolean("hires_fix") ?? ctx.client.config.advanced_generate.default?.hires_fix ?? false
         let img = ctx.interaction.options.getAttachment("source_image")
@@ -285,11 +284,23 @@ export default class extends Command {
         const can_bypass = ctx.client.config.advanced_generate?.source_image?.whitelist?.bypass_checks && ctx.client.config.advanced_generate?.source_image?.whitelist?.user_ids?.includes(ctx.interaction.user.id)
         const party = await ctx.client.getParty(ctx.interaction.channelId, ctx.database)
 
-        if(lora_id) {
-            const lora = await ctx.client.fetchLORAByID(lora_id, ctx.client.config.advanced_generate.user_restrictions?.allow_nsfw)
+        const loras_in=ctx.interaction.options.getString("lora").split(',');
+        if(loras_in.length>5) return ctx.error({error: "You may only pick up to 5 loras"})
+        const loras = loras_in.length == 0 ? undefined : loras_in.split(',').map(lora_in=>{
+            const dets=lora_in.split(':');
+            const lora = await ctx.client.fetchLORAByID(dets[0], ctx.client.config.advanced_generate.user_restrictions?.allow_nsfw)
             if(ctx.client.config.advanced?.dev) console.log(lora)
             if(!lora) return ctx.error({error: "A LORA ID from https://civitai.com/ has to be given", codeblock: false})
             if(lora.type !== "LORA") return ctx.error({error: "The given ID is not a LORA"})
+            const lora_inject = dets.length > 1 && dets[1] != "" ? dets[1] : undefined
+            const lora_model = dets.length > 2 && dets[2] != "" ? dets[2] : 1
+            const lora_clip = dets.length > 3 ? dets[3] : 1
+            if(isNaN(parseInt(lora_model))){ return {error: "Lora model weight must be a number.", codeblock: false}
+            if(isNaN(parseInt(lora_clip))){ return {error: "Lora clip weight must be a number.", codeblock: false}
+            return {name: dets[0], model: lora_model, clip: lora_clip, inject_trigger: lora_inject}
+        });
+        for(var idx=0; idx<loras.length; idx++) {
+            if(typeof loras[i] == "string") return ctx.error(loras[idx])
         }
 
         if(party?.channel_id) return ctx.error({error: `You can only use ${await ctx.client.getSlashCommandTag("generate")} in parties`, codeblock: false})
@@ -384,7 +395,7 @@ export default class extends Command {
                 n: amount,
                 denoising_strength: denoise,
                 karras,
-                loras: lora_id ? [{name: lora_id}] : undefined,
+                loras: loras,
                 tis,
                 hires_fix
             },
