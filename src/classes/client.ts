@@ -2,7 +2,7 @@ import SuperMap from "@thunder04/supermap";
 import { ChannelType, Client, ClientOptions, PermissionFlagsBits, PermissionsBitField } from "discord.js";
 import { readFileSync } from "fs";
 import { Store } from "../stores/store";
-import { Config, HordeStyleData, LORAData, LORAFetchResponse, Party, StoreTypes } from "../types";
+import { Config, HordeStyleData, CivitAIModelData, CivitAIModelFetchResponse, Party, StoreTypes } from "../types";
 import {existsSync, mkdirSync, writeFileSync} from "fs"
 import { Pool } from "pg";
 import crypto from "crypto"
@@ -197,8 +197,8 @@ export class AIHordeClient extends Client {
 		}
 	}
 
-	async fetchLORAs(query: string, amount: number, nsfw: boolean = false) {
-		const res: LORAFetchResponse = await fetch(`https://civitai.com/api/v1/models?types=LORA&limit=${amount}&nsfw=${nsfw}&query=${encodeURIComponent(query)}`, {
+	async fetchCivitAIModels(type: string, query: string, amount: number, nsfw: boolean = false) {
+		const res: CivitAIModelFetchResponse = await fetch(`https://civitai.com/api/v1/models?types=${type}&limit=${amount}&nsfw=${nsfw}&query=${encodeURIComponent(query)}`, {
 			method: "GET",
 			headers: {
 				"User-Agent": `ZeldaFan-Discord-Bot:${this.bot_version}:https://github.com/ZeldaFan0225/AI_Horde_Discord`
@@ -210,7 +210,7 @@ export class AIHordeClient extends Client {
 		return res
 	}
 
-	async fetchLORAByID(id: string, nsfw: boolean = false) {
+	async fetchCivitAIModelByID(id: string, nsfw: boolean = false) {
 		const res = await fetch(`https://civitai.com/api/v1/models/${id}`, {
 			method: "GET",
 			headers: {
@@ -219,7 +219,7 @@ export class AIHordeClient extends Client {
 		})
 		
 		if(res.status === 404) return null
-		const data: LORAData = await res.json()
+		const data: CivitAIModelData = await res.json()
 
 		if(!nsfw && data.nsfw) return null
 

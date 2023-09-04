@@ -207,6 +207,7 @@ const command_data = new SlashCommandBuilder()
                 new SlashCommandStringOption()
                 .setName("textual_inversion")
                 .setDescription("The textual inversions IDs to apply separated with comma")
+                .setAutocomplete(true)
             )
         }
         if(config.advanced_generate.user_restrictions?.allow_hires_fix) {
@@ -306,7 +307,7 @@ export default class extends Command {
         const party = await ctx.client.getParty(ctx.interaction.channelId, ctx.database)
 
         if(lora_id) {
-            const lora = await ctx.client.fetchLORAByID(lora_id, ctx.client.config.advanced_generate.user_restrictions?.allow_nsfw)
+            const lora = await ctx.client.fetchCivitAIModelByID(lora_id, ctx.client.config.advanced_generate.user_restrictions?.allow_nsfw)
             if(ctx.client.config.advanced?.dev) console.log(lora)
             if(!lora) return ctx.error({error: "A LORA ID from https://civitai.com/ has to be given. LoCon and LyCORIS are also acceptable.", codeblock: false})
             if(lora.type !== "LORA" && lora.type !== "LoCon") return ctx.error({error: "The given ID is not a LORA, LoCon or LyCORIS"})
@@ -686,14 +687,38 @@ ETA: <t:${Math.floor(Date.now()/1000)+(status?.wait_time ?? 0)}:R>`
                 const ret = []
 
                 if(!isNaN(Number(option.value)) && option.value) {
-                    const lora_by_id = await context.client.fetchLORAByID(option.value, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
+                    const lora_by_id = await context.client.fetchCivitAIModelByID(option.value, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
 
                     if(lora_by_id?.name && (lora_by_id?.modelVersions[0]?.files[0]?.sizeKB && (lora_by_id?.modelVersions[0]?.files[0]?.sizeKB <= 225280 || context.client.horde_curated_loras?.includes(lora_by_id.id)))) ret.push({
                         name: lora_by_id.name,
                         value: lora_by_id.id.toString()
                     })
                 } else {
-                    const loras = await context.client.fetchLORAs(option.value, 5, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
+                    const loras = await context.client.fetchCivitAIModels("LORA", option.value, 5, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
+    
+                    ret.push(
+                        ...loras.items.filter(l => l?.name && l?.id.toString()).map(l => ({
+                            name: l!.name,
+                            value: l!.id.toString()
+                        }))
+                    )
+                }
+
+                // the api isn't particularly fast so sometimes it might send the result too late
+                return await context.interaction.respond(ret.slice(0,25)).catch(() => null)
+            }
+            case "textual_inversion": {
+                const ret = []
+
+                if(!isNaN(Number(option.value)) && option.value) {
+                    const lora_by_id = await context.client.fetchCivitAIModelByID(option.value, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
+
+                    if(lora_by_id?.name) ret.push({
+                        name: lora_by_id.name,
+                        value: lora_by_id.id.toString()
+                    })
+                } else {
+                    const loras = await context.client.fetchCivitAIModels("TextualInversion", option.value, 5, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
     
                     ret.push(
                         ...loras.items.filter(l => l?.name && l?.id.toString()).map(l => ({
