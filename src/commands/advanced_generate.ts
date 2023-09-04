@@ -207,6 +207,7 @@ const command_data = new SlashCommandBuilder()
                 new SlashCommandStringOption()
                 .setName("textual_inversion")
                 .setDescription("The textual inversions IDs to apply separated with comma")
+                .setAutocomplete(true)
             )
         }
         if(config.advanced_generate.user_restrictions?.allow_hires_fix) {
@@ -713,7 +714,31 @@ ETA: <t:${Math.floor(Date.now()/1000)+(status?.wait_time ?? 0)}:R>`
                         value: lora_by_id.id.toString()
                     })
                 } else {
-                    const loras = await context.client.fetchLORAs(option.value, 5, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
+                    const loras = await context.client.fetchCivitAIModels("LORA", option.value, 5, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
+    
+                    ret.push(
+                        ...loras.items.filter(l => l?.name && l?.id.toString()).map(l => ({
+                            name: l!.name,
+                            value: l!.id.toString()
+                        }))
+                    )
+                }
+
+                // the api isn't particularly fast so sometimes it might send the result too late
+                return await context.interaction.respond(ret.slice(0,25)).catch(() => null)
+            }
+            case "textual_inversion": {
+                const ret = []
+
+                if(!isNaN(Number(option.value)) && option.value) {
+                    const lora_by_id = await context.client.fetchCivitAIModelByID(option.value, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
+
+                    if(lora_by_id?.name) ret.push({
+                        name: lora_by_id.name,
+                        value: lora_by_id.id.toString()
+                    })
+                } else {
+                    const loras = await context.client.fetchCivitAIModels("TextualInversion", option.value, 5, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
     
                     ret.push(
                         ...loras.items.filter(l => l?.name && l?.id.toString()).map(l => ({
