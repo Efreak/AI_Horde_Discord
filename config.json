@@ -163,18 +163,18 @@
             "tiling": false,
             "steps":40,
             "resolution": {
-                "width": 896,
-                "height": 896
+                "width": 960,
+                "height": 960
             },
             "cfg": 8,
             "amount": 2,
             "sampler": "k_dpmpp_sde",
-            "model": "Rev Animated",
             "denoise": 50,
             "gfpgan": false,
             "real_esrgan": false,
             "karras": true,
             "share": true,
+            "hires_fix": true,
             "keep_original_ratio": true,
             "style": "sdxl"
         },
@@ -233,7 +233,9 @@
             "allow_karras": true,
             "allow_sharing": true,
             "allow_rating": false,
-            "allow_lora": true
+            "allow_lora": true,
+            "allow_hires_fix": true,
+            "allow_tis": true
         }
     },
     "generate": {
@@ -251,10 +253,15 @@
         "styles_source": "https://raw.githubusercontent.com/Haidra-Org/AI-Horde-Styles/2023-party/styles.json",
         "default": {
             "tiling": false,
+            "hires_fix": true,
             "amount": 2,
             "share": true,
-            "style": "raw",
+            "style": "sdxl",
             "keep_original_ratio": true,
+            "resolution": {
+                "width": 960,
+                "height": 960
+            },
             "denoise": 50
         },
         "source_image": {
@@ -278,13 +285,27 @@
             },
             "allow_negative_prompt": true,
             "allow_style": true,
+            "allow_sampler": false,
+            "allow_cfg": false,
+            "allow_seed": false,
+            "allow_height": true,
+            "allow_width": true,
+            "allow_gfpgan": false,
+            "allow_real_esrgan": false,
+            "allow_seed_variation": false,
             "allow_tiling": false,
+            "allow_steps": false,
             "allow_amount": true,
+            "allow_models": false,
+            "allow_source_image": false,
+            "allow_denoise": false,
             "allow_nsfw": true,
-            "allow_sharing": true,
+            "allow_karras": false,
+            "allow_sharing": false,
             "allow_rating": false,
-            "allow_source_image": true,
-            "allow_denoise": false
+            "allow_lora": true,
+            "allow_hires_fix": true,
+            "allow_tis": true
         }
     },
     "remix": {
@@ -297,8 +318,8 @@
         "generation_options": {
             "sampler_name": "k_euler",
             "model": "Rev Animated",
-            "width": 512,
-            "height": 512,
+            "width": 704,
+            "height": 704,
             "allow_nsfw": false,
             "censor_nsfw": false,
             "share_result": true,
@@ -313,8 +334,8 @@
             "1133070823821946901"
         ],
         "default": {
-            "recurring": false,
-            "pay_for_generations": false
+            "recurring": true,
+            "pay_for_generations": true
         },
         "user_restrictions": {
             "award": {
