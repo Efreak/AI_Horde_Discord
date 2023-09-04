@@ -91,8 +91,8 @@ export interface Party {
     wordlist: string[]
 }
 
-export interface LORAFetchResponse {
-    items: LORAData[],
+export interface CivitAIModelFetchResponse {
+    items: CivitAIModelData[],
     metadata: {
         totalItems: number,
         currentPage: number,
@@ -101,7 +101,7 @@ export interface LORAFetchResponse {
     }
 }
 
-export interface LORAData {
+export interface CivitAIModelData {
     id: number,
     name: string,
     description: string,
