@@ -690,7 +690,7 @@ ETA: <t:${Math.floor(Date.now()/1000)+(status?.wait_time ?? 0)}:R>`
                     const lora_by_id = await context.client.fetchCivitAIModelByID(option.value, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
 
                     if(lora_by_id?.name && (lora_by_id?.modelVersions[0]?.files[0]?.sizeKB && (lora_by_id?.modelVersions[0]?.files[0]?.sizeKB <= 225280 || context.client.horde_curated_loras?.includes(lora_by_id.id)))) ret.push({
-                        name: lora_by_id.name,
+                        name: lora_by_id.id.toString()+': '+lora_by_id.name,
                         value: lora_by_id.id.toString()
                     })
                 } else {
@@ -698,7 +698,7 @@ ETA: <t:${Math.floor(Date.now()/1000)+(status?.wait_time ?? 0)}:R>`
     
                     ret.push(
                         ...loras.items.filter(l => l?.name && l?.id.toString()).map(l => ({
-                            name: l!.name,
+                            name: l!.id.toString()+":"+l!.name,
                             value: l!.id.toString()
                         }))
                     )
@@ -711,19 +711,19 @@ ETA: <t:${Math.floor(Date.now()/1000)+(status?.wait_time ?? 0)}:R>`
                 const ret = []
 
                 if(!isNaN(Number(option.value)) && option.value) {
-                    const lora_by_id = await context.client.fetchCivitAIModelByID(option.value, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
+                    const ti_by_id = await context.client.fetchCivitAIModelByID(option.value, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
 
-                    if(lora_by_id?.name) ret.push({
-                        name: lora_by_id.name,
-                        value: lora_by_id.id.toString()
+                    if(ti_by_id?.name) ret.push({
+                        name: ti_by_id.id.toString()+': '+ti_by_id.name,
+                        value: ti_by_id.id.toString()
                     })
                 } else {
-                    const loras = await context.client.fetchCivitAIModels("TextualInversion", option.value, 5, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
+                    const tis = await context.client.fetchCivitAIModels("TextualInversion", option.value, 5, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
     
                     ret.push(
-                        ...loras.items.filter(l => l?.name && l?.id.toString()).map(l => ({
-                            name: l!.name,
-                            value: l!.id.toString()
+                        ...tis.items.filter(t => t?.name && t?.id.toString()).map(t => ({
+                            name: t!.id.toString()+":"+t!.name,
+                            value: t!.id.toString()
                         }))
                     )
                 }
