@@ -284,6 +284,7 @@ export interface Config {
         improve_loading_time?: boolean,
         convert_a1111_weight_to_horde_weight?: boolean,
         default?: {
+            negative_prompt?: boolean,
             tiling?: boolean,
             steps?: number,
             resolution?: {
@@ -340,6 +341,7 @@ export interface Config {
                 min?: number,
                 max?: number
             },
+            enforce_negative_prompt?: boolean,
             allow_negative_prompt: boolean,
             allow_style: boolean,
             allow_sampler?: boolean,
@@ -380,6 +382,7 @@ export interface Config {
         improve_loading_time?: boolean,
         convert_a1111_weight_to_horde_weight?: boolean,
         default?: {
+            negative_prompt?: boolean,
             tiling?: boolean,
             clip_skip?: number,
             amount?: number,
@@ -407,6 +410,7 @@ export interface Config {
                 min?: 0,
                 max?: 100
             },
+            enforce_negative_prompt?: boolean,
             allow_negative_prompt: boolean,
             allow_style: boolean,
             allow_tiling?: boolean,
