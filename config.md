@@ -76,6 +76,7 @@ Here you can see an explanation of what which option does
         "convert_a1111_weight_to_horde_weight": Whether to convert a1111 to weighted prompt required by the api (BOOLEAN) *7 *8,
         "improve_loading_time": Try to improve the displaying time between generation finished and generation displayed in discord (BOOLEAN) *7
         "default": {
+            "negative_prompt": keyqords that should be applied at the beginning of negative prompt if none are specified otherwise,
             "tiling": Whether the result should be tileable if nothing is specified (BOOLEAN) *1,
             "steps": How many steps to go through by default if nothing is specified (INTEGER) *1,
             "resolution": {
@@ -128,6 +129,7 @@ Here you can see an explanation of what which option does
                 "min": The minimum denoising strength the user can input into the /generate command (INTEGER; DEFAULT: 0),
                 "max": The maximum denoising strength the user can input into the /generate command (INTEGER; DEFAULT: 100)
             },
+            "enforce_negative_prompt": if true, the default negative will be enforce by prefixing it to the negative prompt. (BOOLEAN),
             "allow_sampler": (BOOLEAN) *5
             "allow_cfg": (BOOLEAN) *5,
             "allow_clip_skip": (BOOLEAN) *5,
@@ -162,6 +164,7 @@ Here you can see an explanation of what which option does
         "convert_a1111_weight_to_horde_weight": Whether to convert a1111 to weighted prompt required by the api (BOOLEAN) *7 *8,
         "improve_loading_time": Try to improve the displaying time between generation finished and generation displayed in discord (BOOLEAN) *7
         "default": {
+            "negative_prompt": keyqords that should be applied at the beginning of negative prompt if none are specified otherwise,
             "tiling": Whether the result should be tileable if nothing is specified (BOOLEAN) *1,
             "clip_skip": The clip_skip value to use for generation (INTEGER) *1,
             "share:" The default for sharing the result (BOOLEAN) *1,
@@ -173,6 +176,7 @@ Here you can see an explanation of what which option does
                 "max": The maximum amount of images a user can generate (INTEGER; DEFAULT: 1)
             },
             
+            "enforce_negative_prompt": if true, the default negative will be enforce by prefixing it to the negative prompt. (BOOLEAN),
             "allow_negative_prompt": (BOOLEAN) *5,
             "allow_style": (BOOLEAN) *5,
             "allow_tiling": (BOOLEAN) *5,
