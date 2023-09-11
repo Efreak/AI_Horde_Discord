@@ -13,8 +13,9 @@
         "result_structure_v2_enabled": true
     },
     "filter_actions": {
-        "mode": "whitelist",
-        "guilds": [
+        "mode": "blacklist",
+        "guilds": [],
+        "guilds2": [
             "2152274582853386241",
             "10480042368326696961"
         ],
@@ -155,7 +156,7 @@
         "replacement_filter": true,
         "blacklisted_models": [],
         "blacklisted_words": ["<@215227108916592650>","efreak"],
-        "backlist_regex": "\\bee*\\s*?ff\\s*.?\\s*rr*.?e*.?a*.?kk*\\b",
+        "blacklist_regex": "\\bee*.?\\s*?ff\\s*.?\\s*rr*.?e*.?a*.?kk*\\b",
         "update_generation_status_interval_seconds": 5,
         "convert_a1111_weight_to_horde_weight": true,
         "improve_loading_time": true,
@@ -246,11 +247,11 @@
         "replacement_filter": true,
         "blacklisted_styles": [],
         "blacklisted_words": ["<@215227108916592650>","efreak","Efreak"],
-        "backlist_regexes": "ee*ff*rr*ee*aa*kk*",
+        "blacklist_regex": "\\bee*.?\\s*?ff\\s*.?\\s*rr*.?e*.?a*.?kk*\\b",
         "update_generation_status_interval_seconds": 3,
         "convert_a1111_weight_to_horde_weight": true,
         "improve_loading_time": true,
-        "styles_source": "https://raw.githubusercontent.com/Haidra-Org/AI-Horde-Styles/2023-party/styles.json",
+        "styles_source": "https://raw.githubusercontent.com/efreak/AI-Horde-Styles/bweshtest/styles.json",
         "default": {
             "tiling": false,
             "hires_fix": true,
@@ -353,7 +354,7 @@
         }
     },
     "data_sources": {
-        "styles_source": "https://github.com/Haidra-Org/AI-Horde-Styles/raw/2023-party/styles.json",
-        "style_categories_source": "https://github.com/Haidra-Org/AI-Horde-Styles/raw/2023-party/categories.json"
+        "styles_source": "https://github.com/efreak/AI-Horde-Styles/raw/bweshtest/styles.json",
+        "style_categories_source": "https://github.com/efreak/AI-Horde-Styles/raw/bweshtest/categories.json"
     }
 }
