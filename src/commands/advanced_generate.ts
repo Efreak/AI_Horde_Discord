@@ -704,7 +704,7 @@ ETA: <t:${Math.floor(Date.now()/1000)+(status?.wait_time ?? 0)}:R>`
                     )
                 }
 
-                // the api isn't particularly fast so sometimes it might send the result too late
+                // the api isn't particularly fast, so sometimes it might send the result too late
                 return await context.interaction.respond(ret.slice(0,25)).catch(() => null)
             }
             case "textual_inversion": {
