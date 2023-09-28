@@ -67,6 +67,8 @@
             "strip_background": false
         },
         "user_restrictions": {
+            "allow_attachment": true,
+            "allow_url": true,
             "allow_nsfw": true,
             "allow_caption": true,
             "allow_interrogation": true,

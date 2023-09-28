@@ -56,6 +56,8 @@ Here you can see an explanation of what which option does
             "interrogation": If no choice is given interrogate the image (BOOLEAN) *1,
         },
         "user_restrictions": {
+            "allow_attachment": allow users to attach an image (BOOLEAN),
+            "allow_url": allow users to submit an arbitrary url (BOOLEAN),
             "allow_nsfw": Allow users to interrogate for nsfw (BOOLEAN),
             "allow_caption": Allow users to create a caption (BOOLEAN),
             "allow_interrogation": Allow users to get an interrogation result (BOOLEAN)

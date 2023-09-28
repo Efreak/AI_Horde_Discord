@@ -315,6 +315,8 @@ export interface Config {
             strip_background?: boolean
         },
         user_restrictions?: {
+            allow_attachment?: boolean,
+            allow_url?: boolean,
             allow_nsfw?: boolean,
             allow_caption?: boolean,
             allow_interrogation?: boolean,
