@@ -114,7 +114,7 @@ export default class extends Command {
 
         await ctx.interaction.deferReply({})
         const attachment = ctx.interaction.options.getAttachment("image")
-        const url = ctx.interaction.options.getAttachment("url")
+        const url = ctx.interaction.options.getString("url")
         const nsfw = ctx.interaction.options.getBoolean("nsfw") ?? ctx.client.config.interrogate?.default?.nsfw
         const caption = ctx.interaction.options.getBoolean("caption") ?? ctx.client.config.interrogate?.default?.caption
         const detailed = ctx.interaction.options.getBoolean("detailed_interrogation") ?? ctx.client.config.interrogate?.default?.interrogation
@@ -127,15 +127,15 @@ export default class extends Command {
         const strip_background = ctx.interaction.options.getBoolean("strip_background") ?? ctx.client.config.interrogate?.default?.strip_background
 
         if(ctx.interaction.options.data.length <= 1) return ctx.error({error: "One of the interrogation types must be selected"})
-        if(!url && !attachment) return ctx.error({error: "You must attach an image or a URL"})
         if(url && attachment) return ctx.error({error: "You must attach an image *or* a URL, not both."})
+        const imgurl = url || attachment?.url || ""
+        if(!imgurl) return ctx.error({error: "You must attach an image or a URL"})
 
         const user_token = await ctx.client.getUserToken(ctx.interaction.user.id, ctx.database)
 
         if(!user_token) return ctx.error({error: `You are required to ${await ctx.client.getSlashCommandTag("login")} to use ${await ctx.client.getSlashCommandTag("interrogate")}`, codeblock: false})
         if( attachment && !attachment.contentType?.startsWith("image/")) return ctx.error({error: "Attachment input must be a image"})
 
-        const imgurl = url ?? attachment.url
         const token = user_token || ctx.client.config.default_token || "0000000000"
 
         const forms = []
