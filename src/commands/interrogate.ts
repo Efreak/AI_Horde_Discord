@@ -17,7 +17,6 @@ const command_data = new SlashCommandBuilder()
                 new SlashCommandAttachmentOption()
                 .setName("image")
                 .setDescription("The image to interrogate")
-                .setRequired(true)
             )
         }
         if(config.interrogate.user_restrictions?.allow_url !== false) {
@@ -25,7 +24,6 @@ const command_data = new SlashCommandBuilder()
                 new SlashCommandStringOption()
                 .setName("url")
                 .setDescription("The url of the image to interrogate")
-                .setRequired(true)
             )
         }
         if(config.interrogate.user_restrictions?.allow_nsfw) {
