@@ -1,0 +1,287 @@
+{
+    "use_database": true,
+    "default_token": "0000000000",
+    "apply_roles_to_worker_owners": [
+        "1120086488152031314"
+    ],
+    "apply_roles_to_trusted_users": [
+        "1120086724526231652"
+    ],
+    "advanced": {
+        "dev": false,
+        "encrypt_token": true,
+        "result_structure_v2_enabled": true
+    },
+    "filter_actions": {
+        "mode": "blacklist",
+        "guilds": [],
+        "guilds2": [
+            "2152274582853386241",
+            "10480042368326696961"
+        ],
+        "apply_filter_to": {
+            "react_to_transfer": true,
+            "apply_roles_to_worker_owners": true,
+            "apply_roles_to_trusted_users": true
+        }
+    },
+    "react_to_transfer": {
+        "enabled": true,
+        "emojis": [
+            { "id": "1130409922518077440", "amount": 100,    "title": "Marvelous!",  "message": "They thought your message was nice" },
+            { "id": "1130410007146541077", "amount": 200,    "title": "Incredible!", "message": "They thought your message was nice" },
+            { "id": "1130410089401036810", "amount": 300,    "title": "Very nice!",  "message": "They thought your message was nice" },
+            { "id": "1130410195890229328", "amount": 400,    "title": "Great!",      "message": "They thought your message was nice" },
+            { "id": "1130410271823888414", "amount": 500,    "title": "Amazing!",    "message": "They thought your message was nice" },
+            { "id": "1130410478615670874", "amount": 600,    "title": "Awesome!",    "message": "They thought your message was nice" },
+            { "id": "1130410548866072576", "amount": 700,    "title": "Lovely!",     "message": "They thought your message was nice" },
+            { "id": "1130410665807446018", "amount": 800,    "title": "Marvelous!",  "message": "They thought your message was nice" },
+            { "id": "1130410764126138448", "amount": 900,    "title": "Marvelous!",  "message": "They thought your message was nice" },
+            { "id": "1130410845860532279", "amount": 1000,   "title": "Marvelous!",  "message": "They thought your message was nice" },
+            { "id": "1130410909869805634", "amount": 2000,   "title": "Marvelous!",  "message": "They thought your message was nice" },
+            { "id": "1130410992254328864", "amount": 2500,   "title": "Marvelous!",  "message": "They thought your message was nice" },
+            { "id": "1130411085481115698", "amount": 5000,   "title": "Marvelous!",  "message": "They thought your message was nice" },
+            { "id": "1130411160928260126", "amount": 7500,   "title": "Marvelous!",  "message": "They thought your message was nice" },
+            { "id": "1130411264108142702", "amount": 10000,  "title": "Marvelous!",  "message": "They thought your message was nice" },
+            { "id": "1130411338976481342", "amount": 25000,  "title": "Marvelous!",  "message": "They thought your message was nice" },
+            { "id": "1130411410078318623", "amount": 50000,  "title": "Marvelous!",  "message": "They thought your message was nice" },
+            { "id": "1130411455645241414", "amount": 100000, "title": "Marvelous!",  "message": "They thought your message was nice" }
+        ],
+        "allow_delayed_claim": true
+    },
+    "logs": {
+        "enabled": false,
+        "directory": "/logs",
+        "plain": true,
+        "csv": true,
+        "log_actions": {
+            "without_source_image": true,
+            "with_source_image": true
+        }
+    },
+    "interrogate": {
+        "enabled": true,
+        "update_interrogation_status_interval_seconds": 5,
+        "enable_user_captioning": true,
+        "enable_image_description_context": true,
+        "default": {
+            "nsfw": true,
+            "caption": false,
+            "interrogation": false,
+            "gfpgan": false,
+            "realesrgan_x4_plus": false,
+            "realesrgan_x4_plus_anime": false,
+            "nmkd_siax": false,
+            "animesharp_x4": false,
+            "codeformers": false,
+            "strip_background": false
+        },
+        "user_restrictions": {
+            "allow_nsfw": true,
+            "allow_caption": true,
+            "allow_interrogation": true,
+            "allow_gfpgan": true,
+            "allow_realesrgan_x4_plus": true,
+            "allow_realesrgan_x4_plus_anime": true,
+            "allow_nmkd_siax": true,
+            "allow_animesharp_x4": true,
+            "allow_codeformers": true,
+            "allow_strip_background": true
+        }
+    },
+    "advanced_generate": {
+        "enabled": true,
+        "require_login": true,
+        "trusted_workers": false,
+        "censor_nsfw": false,
+        "replacement_filter": true,
+        "blacklisted_models": [],
+        "blacklisted_words": ["<@215227108916592650>","efreak"],
+        "blacklist_regex": "\\bee*.?\\s*?ff\\s*.?\\s*rr*.?e*.?a*.?kk*\\b",
+        "update_generation_status_interval_seconds": 5,
+        "convert_a1111_weight_to_horde_weight": true,
+        "improve_loading_time": true,
+        "default": {
+            "tiling": false,
+            "steps": 30,
+            "resolution": {
+                "width": 1024,
+                "height": 1024
+            },
+            "cfg": 8,
+            "amount": 1,
+            "sampler": "k_dpmpp_2m",
+            "model": "SDXL 1.0",
+            "denoise": 50,
+            "gfpgan": false,
+            "real_esrgan": false,
+            "karras": false,
+            "share": true,
+            "keep_original_ratio": true,
+            "hires_fix": true,
+            "style": "sdxl",
+            "tis": ""
+        },
+        "source_image": {
+            "require_login": true,
+            "require_ai_horde_account_oauth_connection": false,
+            "allow_non_webp": true,
+            "require_nsfw_channel": false,
+            "whitelist": {
+                "only_allow_whitelist": false,
+                "user_ids": ["2152271089165926501"],
+                "bypass_checks": true
+            }
+        },
+        "user_restrictions": {
+            "width": {
+                "min": 64,
+                "max": 3072
+            },
+            "height": {
+                "min": 64,
+                "max": 3072
+            },
+            "amount": {
+                "max": 9
+            },
+            "steps": {
+                "min": 1,
+                "max": 200
+            },
+            "cfg": {
+                "min": 1,
+                "max": 40
+            },
+            "denoise": {
+                "min": 0,
+                "max": 100
+            },
+            "enforce_negative_prompt": false,
+            "allow_negative_prompt": true,
+            "allow_style": true,
+            "allow_sampler": true,
+            "allow_cfg": true,
+            "allow_seed": true,
+            "allow_height": true,
+            "allow_width": true,
+            "allow_gfpgan": true,
+            "allow_real_esrgan": true,
+            "allow_seed_variation": true,
+            "allow_tiling": true,
+            "allow_steps": true,
+            "allow_amount": true,
+            "allow_models": true,
+            "allow_source_image": true,
+            "allow_denoise": true,
+            "allow_nsfw": true,
+            "allow_karras": true,
+            "allow_sharing": true,
+            "allow_rating": false,
+            "allow_lora": true,
+            "allow_hires_fix": true,
+            "allow_tis": true
+        }
+    },
+    "generate": {
+        "enabled": true,
+        "require_login": true,
+        "trusted_workers": false,
+        "censor_nsfw": false,
+        "replacement_filter": true,
+        "blacklisted_styles": [],
+        "blacklisted_words": ["<@215227108916592650>","efreak","Efreak"],
+        "blacklist_regex": "\\bee*.?\\s*?ff\\s*.?\\s*rr*.?e*.?a*.?kk*\\b",
+        "update_generation_status_interval_seconds": 5,
+        "convert_a1111_weight_to_horde_weight": true,
+        "improve_loading_time": true,
+        "default": {
+            "negative_prompt": "loli, nsfw",
+            "tiling": false,
+            "amount": 1,
+            "share": true,
+            "style": "sdxl",
+            "keep_original_ratio": true,
+            "denoise": 50
+        },
+        "source_image": {
+            "require_login": true,
+            "require_ai_horde_account_oauth_connection": false,
+            "allow_non_webp": true,
+            "require_nsfw_channel": false,
+            "whitelist": {
+                "only_allow_whitelist": false,
+                "user_ids": [],
+                "bypass_checks": true
+            }
+        },
+        "user_restrictions": {
+            "amount": {
+                "max": 9
+            },
+            "denoise": {
+                "min": 0,
+                "max": 100
+            },
+            "enforce_negative_prompt": false,
+            "allow_negative_prompt": true,
+            "allow_style": true,
+            "allow_tiling": true,
+            "allow_amount": true,
+            "allow_nsfw": true,
+            "allow_sharing": true,
+            "allow_rating": false,
+            "allow_source_image": true,
+            "allow_denoise": true
+        }
+    },
+    "remix": {
+        "enabled": true,
+        "require_login": true,
+        "trusted_workers": false,
+        "blacklisted_words": [],
+        "blacklist_regex": "",
+        "convert_a1111_weight_to_horde_weight": true,
+        "allow_custom_strength": true,
+        "generation_options": {
+            "sampler_name": "k_euler",
+            "model": "SDXL 1.0",
+            "width": 1024,
+            "height": 1024,
+            "allow_nsfw": true,
+            "censor_nsfw": false,
+            "share_result": true,
+            "cfg": 7.5,
+            "denoise": 75,
+            "steps": 100
+        }
+    },
+    "party": {
+        "enabled": true,
+        "mention_roles": [
+            "1234567890123456789"
+        ],
+        "default": {
+            "recurring": true,
+            "pay_for_generations": true
+        },
+        "user_restrictions": {
+            "award": {
+                "min": 0,
+                "max": 25000
+            },
+            "duration": {
+                "min": 1,
+                "max": 100
+            },
+            "wordlist": {
+                "min": 0,
+                "max": 100
+            }
+        }
+    },
+    "data_sources": {
+        "styles_source": "https://raw.githubusercontent.com/Haidra-Org/AI-Horde-Styles/main/styles.json",
+        "style_categories_source": "https://raw.githubusercontent.com/Haidra-Org/AI-Horde-Styles/main/categories.json"
+    }
+}
