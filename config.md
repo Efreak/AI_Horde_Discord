@@ -11,7 +11,8 @@ Here you can see an explanation of what which option does
     "advanced": {
         "dev": Whether this instance is for development or not (BOOLEAN) *4,
         "encrypt_token": Encrypt the users token before saving in the database (BOOLEAN) *9,
-        "result_structure_v2_enabled": Shows a new message as the result for generate and advanced generate (BOOLEAN)
+        "result_structure_v2_enabled": Shows a new message as the result for generate and advanced generate (BOOLEAN),
+        "civitai_api_key": make authenticated requests against the Civitai API for Loras. requests will be unauthenticated if not set. (STRING)
     },
     "filter_actions": {
         "mode": The mode on how the guilds list should act ('whitelist' or 'blacklist'),

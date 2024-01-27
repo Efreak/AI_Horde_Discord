@@ -198,11 +198,11 @@ export class AIHordeClient extends Client {
 	}
 
 	async fetchLORAs(query: string, amount: number, nsfw: boolean = false) {
+		const headers: {"User-Agent": string, Authorization?: string} = { "User-Agent": `ZeldaFan-Discord-Bot:${this.bot_version}:https://github.com/ZeldaFan0225/AI_Horde_Discord` }
+		if(this.config.advanced?.civitai_api_key) { headers.Authorization = 'Bearer ' + this.config.advanced.civitai_api_key }
 		const res: LORAFetchResponse = await fetch(`https://civitai.com/api/v1/models?types=LORA&limit=${amount}&nsfw=${nsfw}&query=${encodeURIComponent(query)}`, {
 			method: "GET",
-			headers: {
-				"User-Agent": `ZeldaFan-Discord-Bot:${this.bot_version}:https://github.com/ZeldaFan0225/AI_Horde_Discord`
-			}
+			headers: headers
 		}).then(res => res.json())
 
 		if(this.config.advanced?.dev) console.log(res)
@@ -211,11 +211,11 @@ export class AIHordeClient extends Client {
 	}
 
 	async fetchLORAByID(id: string, nsfw: boolean = false) {
+		const headers: {"User-Agent": string, Authorization?: string} = { "User-Agent": `ZeldaFan-Discord-Bot:${this.bot_version}:https://github.com/ZeldaFan0225/AI_Horde_Discord` }
+		if(this.config.advanced?.civitai_api_key) { headers.Authorization = 'Bearer ' + this.config.advanced.civitai_api_key }
 		const res = await fetch(`https://civitai.com/api/v1/models/${id}`, {
 			method: "GET",
-			headers: {
-				"User-Agent": `ZeldaFan-Discord-Bot:${this.bot_version}:https://github.com/ZeldaFan0225/AI_Horde_Discord`
-			}
+			headers: headers
 		})
 		
 		if(res.status === 404) return null

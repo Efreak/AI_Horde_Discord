@@ -204,7 +204,8 @@ export interface Config {
     advanced?: {
         dev?: boolean,
         encrypt_token?: boolean,
-        result_structure_v2_enabled: boolean
+        result_structure_v2_enabled: boolean,
+        civitai_api_key?: string
     },
     filter_actions?: {
         mode?: "whitelist" | "blacklist",

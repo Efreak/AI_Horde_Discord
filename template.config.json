@@ -13,7 +13,8 @@
     "advanced": {
         "dev": false,
         "encrypt_token": true,
-        "result_structure_v2_enabled": true
+        "result_structure_v2_enabled": true,
+        "civitai_api_key": "isjnri73u"
     },
     "filter_actions": {
         "mode": "whitelist",
