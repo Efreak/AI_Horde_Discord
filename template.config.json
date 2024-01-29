@@ -242,6 +242,7 @@
             "censor_nsfw": true,
             "share_result": false,
             "cfg": 7.5,
+            "clip_skip": 1,
             "denoise": 75,
             "steps": 100
         }

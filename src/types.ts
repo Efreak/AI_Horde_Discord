@@ -436,6 +436,7 @@ export interface Config {
             model: string,
             share_result?: boolean,
             cfg?: number,
+            clip_skip?: number,
             denoise?: number,
             steps?: number
         }
