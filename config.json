@@ -8,7 +8,7 @@
         "1120086724526231652"
     ],
     "advanced": {
-        "dev": false,
+        "dev": true,
         "encrypt_token": true,
         "result_structure_v2_enabled": true
     },
