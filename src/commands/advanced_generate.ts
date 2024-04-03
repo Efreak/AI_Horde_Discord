@@ -307,6 +307,7 @@ export default class extends Command {
         const party = await ctx.client.getParty(ctx.interaction.channelId, ctx.database)
 
         let lora_clip_weight, lora_model_weight, lora_id
+        let lora_version=false
         if(lora_raw) {
             const lora_in = lora_raw.split(':')
             lora_id = lora_in[0]
@@ -318,6 +319,8 @@ export default class extends Command {
                 if(!lora) return ctx.error({error: "A LORA ID from https://civitai.com/ has to be given. LoCon and LyCORIS are also acceptable.\nFor advanced usage, do not use autocomplete results, use numberic modelid or modelversionid instead:\n- To use a specific version, prefix the modelversionid with a v. eg. v12345\n- To add weights, split them with colons: 12345:1.5 for 1.5 model weight, v12345:1.5:2 for clip weight of 2.", codeblock: false})
                 if(lora.model.type !== "LORA" && lora.model.type !== "LoCon") return ctx.error({error: "The given ID is not a LORA, LoCon or LyCORIS"})
                 if(lora.files[0]?.sizeKB && lora.files[0]?.sizeKB > 225280) return ctx.error({error: "The given LORA, LoCon or LyCORIS is larger than 220mb"})
+                lora_id=lora_id.replace("v", "")
+                lora_version=true
             } else if(lora_id) {
                 const lora = await ctx.client.fetchLORAByID(lora_id, ctx.client.config.advanced_generate.user_restrictions?.allow_nsfw)
                 if(ctx.client.config.advanced?.dev) console.log(lora)
@@ -445,7 +448,7 @@ export default class extends Command {
 
         if(ctx.client.config.advanced?.dev) {
             console.log(token)
-            console.log(generation_data)
+            console.dir(generation_data, {depth:null});
         }
 
         const generation_start = await ctx.ai_horde_manager.postAsyncImageGenerate(generation_data, {token})
