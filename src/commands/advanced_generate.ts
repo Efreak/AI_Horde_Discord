@@ -269,7 +269,7 @@ export default class extends Command {
         const style = ctx.client.horde_styles[style_raw?.toLowerCase() ?? ""] || {prompt: "{p}{np}"}
 
         const negative_prompt = ctx.interaction.options.getString("negative_prompt") ?? ""
-        const sampler = (ctx.interaction.options.getString("sampler") ?? ctx.client.config.advanced_generate?.default?.sampler ?? ModelGenerationInputStableSamplers.k_euler) as any
+        const sampler = (ctx.interaction.options.getString("sampler") ?? style?.sampler_name ?? ctx.client.config.advanced_generate?.default?.sampler ?? ModelGenerationInputStableSamplers.k_euler) as any
         const cfg = ctx.interaction.options.getInteger("cfg") ?? style.cfg_scale ?? ctx.client.config.advanced_generate?.default?.cfg ?? 7.5
         const denoise = (ctx.interaction.options.getInteger("denoise") ?? ctx.client.config.advanced_generate?.default?.denoise ?? 50)/100
         const seed = ctx.interaction.options.getString("seed")
@@ -283,11 +283,11 @@ export default class extends Command {
         let width = ctx.interaction.options.getInteger("width") ?? style?.width ?? ctx.client.config.advanced_generate?.default?.resolution?.width ?? 512
         const model = ctx.interaction.options.getString("model") ?? style?.model ?? ctx.client.config.advanced_generate?.default?.model
         const keep_ratio = ctx.interaction.options.getBoolean("keep_original_ratio") ?? ctx.client.config.advanced_generate?.default?.keep_original_ratio ?? true
-        const karras = ctx.interaction.options.getBoolean("karras") ?? ctx.client.config.advanced_generate?.default?.karras ?? false
+        const karras = ctx.interaction.options.getBoolean("karras") ?? style?.karras ?? ctx.client.config.advanced_generate?.default?.karras ?? false
         const share_result = ctx.interaction.options.getBoolean("share_result") ?? ctx.client.config.advanced_generate?.default?.share
         const lora_id = ctx.interaction.options.getString("lora")
         const ti_raw = ctx.interaction.options.getString("textual_inversion") ?? ctx.client.config.advanced_generate.default?.tis
-        const hires_fix = ctx.interaction.options.getBoolean("hires_fix") ?? ctx.client.config.advanced_generate.default?.hires_fix ?? false
+        const hires_fix = ctx.interaction.options.getBoolean("hires_fix") ?? style?.hires_fix ?? ctx.client.config.advanced_generate.default?.hires_fix ?? false
         const clipskip = ctx.interaction.options.getInteger("clip_skip") ?? style?.clip_skip ?? ctx.client.config.advanced_generate?.default?.clip_skip ?? 1
         let img = ctx.interaction.options.getAttachment("source_image")
 

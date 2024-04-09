@@ -182,6 +182,7 @@ export interface HordeStyleData {
     width?: number,
     clip_skip?: number,
     height?: number,
+    karras?: boolean,
     steps?: number,
     cfg_scale?: number,
     hires_fix?: boolean,
