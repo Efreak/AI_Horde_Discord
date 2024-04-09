@@ -217,10 +217,20 @@ const command_data = new SlashCommandBuilder()
                 .setDescription("Whether to apply hires_fix to the generation")
             )
         }
+        if(config.advanced_generate.user_restrictions?.allow_clip_skip) {
+            command_data
+            .addIntegerOption(
+                new SlashCommandIntegerOption()
+                .setName("clip_skip")
+                .setDescription("The number of CLIP language processor layers to skip")
+                .setMinValue(1) //1 is off/default
+                .setMaxValue(12)
+            )
+        }
     }
 
 
-    // 21 out of 25 options used
+    // 24 out of 25 options used
 
 function generateButtons(id: string) {
     let i = 0
@@ -278,7 +288,7 @@ export default class extends Command {
         const lora_id = ctx.interaction.options.getString("lora")
         const ti_raw = ctx.interaction.options.getString("textual_inversion") ?? ctx.client.config.advanced_generate.default?.tis
         const hires_fix = ctx.interaction.options.getBoolean("hires_fix") ?? ctx.client.config.advanced_generate.default?.hires_fix ?? false
-        const clipskip = style?.clip_skip ?? 1
+        const clipskip = ctx.interaction.options.getInteger("clip_skip") ?? style?.clip_skip ?? ctx.client.config.advanced_generate?.default?.clip_skip ?? 1
         let img = ctx.interaction.options.getAttachment("source_image")
 
         const user_token = await ctx.client.getUserToken(ctx.interaction.user.id, ctx.database)
