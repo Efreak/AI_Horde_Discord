@@ -133,6 +133,7 @@ export default class extends Command {
 
         const style = ctx.client.getHordeStyle(style_raw)
 
+        const clipskip = style?.clip_skip ?? 1
         let height = style?.height
         let width = style?.width
 
@@ -215,6 +216,7 @@ export default class extends Command {
             params: {
                 sampler_name: style.sampler_name as typeof ModelGenerationInputStableSamplers[keyof typeof ModelGenerationInputStableSamplers],
                 height: height,
+                clip_skip: clipskip,
                 width: width,
                 n: amount,
                 tiling,
