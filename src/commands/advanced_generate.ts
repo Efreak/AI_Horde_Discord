@@ -342,7 +342,7 @@ export default class extends Command {
             })
         }
 
-        const tis = ti_raw?.split(",").map(ti => ti.trim()).filter(v => v).map(ti => ({name: ti, inject_ti: prompt.toLowerCase().indexOf("embedding:") === -1 ? "prompt" as const : undefined}))
+        const tis = ti_raw?.split(",").map(ti => ti.trim()).filter(v => v).map(ti => ({name: ti, inject_ti: prompt.toLowerCase().indexOf("embedding:") === -1 ? "prompt" as const : undefined})) ?? style.tis
         
         prompt = style.prompt.slice().replace("{p}", prompt)
         prompt = prompt.replace("{np}", !negative_prompt || prompt.includes("###") ? negative_prompt : `###${negative_prompt}`)
@@ -397,7 +397,7 @@ export default class extends Command {
                 n: amount,
                 denoising_strength: denoise,
                 karras,
-                loras: lora_id ? [{name: lora_id}] : undefined,
+                loras: lora_id ? [{name: lora_id}] : style?.loras ?? undefined,
                 tis,
                 hires_fix
             },
