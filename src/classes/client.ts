@@ -2,7 +2,7 @@ import SuperMap from "@thunder04/supermap";
 import { ChannelType, Client, ClientOptions, PermissionFlagsBits, PermissionsBitField } from "discord.js";
 import { readFileSync } from "fs";
 import { Store } from "../stores/store";
-import { Config, HordeStyleData, CivitAIModelData, CivitAIModelFetchResponse, Party, StoreTypes } from "../types";
+import { Config, LORAVersionData, HordeStyleData, CivitAIModelData, CivitAIModelFetchResponse, Party, StoreTypes } from "../types";
 import {existsSync, mkdirSync, writeFileSync} from "fs"
 import { Pool } from "pg";
 import crypto from "crypto"

@@ -306,7 +306,7 @@ export default class extends Command {
         const can_bypass = ctx.client.config.advanced_generate?.source_image?.whitelist?.bypass_checks && ctx.client.config.advanced_generate?.source_image?.whitelist?.user_ids?.includes(ctx.interaction.user.id)
         const party = await ctx.client.getParty(ctx.interaction.channelId, ctx.database)
 
-        let loras=[]
+        let loras = style?.loras || [];
         if(lora_raw) {
             const all_loras=(lora_raw || "").split(',');
             for(let tlora=0; tlora < all_loras.length; tlora++){
@@ -318,7 +318,7 @@ export default class extends Command {
                         is_version: false
                 }
                 if(toadd.name && toadd.name[0] =="v") {
-                    const lora = await ctx.client.fetchCivitAIModelByVersionID(parseInt(toadd.name.replace("v","")), ctx.client.config.advanced_generate.user_restrictions?.allow_nsfw)
+                    const lora = await ctx.client.fetchLORAByVersionID(parseInt(toadd.name.replace("v","")), ctx.client.config.advanced_generate.user_restrictions?.allow_nsfw)
                     if(ctx.client.config.advanced?.dev) console.log(lora)
                     if(!lora) return ctx.error({error: "A LORA ID from https://civitai.com/ has to be given. LoCon and LyCORIS are also acceptable.\nFor advanced usage, do not use autocomplete results, use numberic modelid or modelversionid instead:\n- To use a specific version, prefix the modelversionid with a v. eg. v12345\n- To add weights, split them with colons: 12345:1.5 for 1.5 model weight, v12345:1.5:2 for clip weight of 2.", codeblock: false})
                     if(lora.model.type !== "LORA" && lora.model.type !== "LoCon") return ctx.error({error: "The given ID is not a LORA, LoCon or LyCORIS"})
@@ -336,10 +336,6 @@ export default class extends Command {
                 }
             }
         }
-        const lora_obj = lora_id ? [{
-                "name": lora_id,
-                "inject_trigger": "all"
-            }] : style?.loras;
 
         if(party?.channel_id) return ctx.error({error: `You can only use ${await ctx.client.getSlashCommandTag("generate")} in parties`, codeblock: false})
         if(ctx.client.config.advanced_generate?.require_login && !user_token) return ctx.error({error: `You are required to ${await ctx.client.getSlashCommandTag("login")} to use ${await ctx.client.getSlashCommandTag("advanced_generate")}`, codeblock: false})
@@ -434,7 +430,7 @@ export default class extends Command {
                 n: amount,
                 denoising_strength: denoise,
                 karras,
-                loras: lora_obj,
+                loras: loras,
                 tis,
                 hires_fix,
                 workflow: qr_code_url ? "qr_code" : undefined,
@@ -717,7 +713,7 @@ ETA: <t:${Math.floor(Date.now()/1000)+(status?.wait_time ?? 0)}:R>`
                         value: "v"+lora_by_id.id.toString()
                     })
                 } else if(!isNaN(Number(option.value)) && option.value) {
-                    const lora_by_id = await context.client.fetchLORAByID(option.value, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
+                    const lora_by_id = await context.client.fetchCivitAIModelByID(option.value, context.client.config.advanced_generate?.user_restrictions?.allow_nsfw)
 
                     if(lora_by_id?.name && (lora_by_id?.modelVersions[0]?.files[0]?.sizeKB && (lora_by_id?.modelVersions[0]?.files[0]?.sizeKB <= 225280 || context.client.horde_curated_loras?.includes(lora_by_id.id)))) ret.push({
                         name: lora_by_id.id.toString()+': '+lora_by_id.name,
