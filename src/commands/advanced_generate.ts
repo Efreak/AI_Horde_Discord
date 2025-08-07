@@ -197,7 +197,7 @@ const command_data = new SlashCommandBuilder()
             .addStringOption(
                 new SlashCommandStringOption()
                 .setName("lora")
-                .setDescription("The LORA LoCon or LyCORIS to use for this request. Use v12345:1.4:5 for versionid 12345 with weights")
+                .setDescription("LORA LoCon or LyCORIS to use. Use 12345:1.4:5,v123 for model 12345 and versionid 123")
                 .setAutocomplete(true)
             )
         }
@@ -306,27 +306,34 @@ export default class extends Command {
         const can_bypass = ctx.client.config.advanced_generate?.source_image?.whitelist?.bypass_checks && ctx.client.config.advanced_generate?.source_image?.whitelist?.user_ids?.includes(ctx.interaction.user.id)
         const party = await ctx.client.getParty(ctx.interaction.channelId, ctx.database)
 
-        let lora_clip_weight, lora_model_weight, lora_id
-        let lora_version=false
+        let loras=[]
         if(lora_raw) {
-            const lora_in = lora_raw.split(':')
-            lora_id = lora_in[0]
-            lora_model_weight = lora_in.length > 1 && lora_in[1] ? parseFloat(lora_in[1]) : 1
-            lora_clip_weight = lora_in.length > 2  && lora_in[2] ? parseFloat(lora_in[2]) : 1
-            if(lora_id && lora_id[0] =="v") {
-                const lora = await ctx.client.fetchLORAByVersionID(parseInt(lora_id.replace("v","")), ctx.client.config.advanced_generate.user_restrictions?.allow_nsfw)
-                if(ctx.client.config.advanced?.dev) console.log(lora)
-                if(!lora) return ctx.error({error: "A LORA ID from https://civitai.com/ has to be given. LoCon and LyCORIS are also acceptable.\nFor advanced usage, do not use autocomplete results, use numberic modelid or modelversionid instead:\n- To use a specific version, prefix the modelversionid with a v. eg. v12345\n- To add weights, split them with colons: 12345:1.5 for 1.5 model weight, v12345:1.5:2 for clip weight of 2.", codeblock: false})
-                if(lora.model.type !== "LORA" && lora.model.type !== "LoCon") return ctx.error({error: "The given ID is not a LORA, LoCon or LyCORIS"})
-                if(lora.files[0]?.sizeKB && lora.files[0]?.sizeKB > 225280) return ctx.error({error: "The given LORA, LoCon or LyCORIS is larger than 220mb"})
-                lora_id=lora_id.replace("v", "")
-                lora_version=true
-            } else if(lora_id) {
-                const lora = await ctx.client.fetchLORAByID(lora_id, ctx.client.config.advanced_generate.user_restrictions?.allow_nsfw)
-                if(ctx.client.config.advanced?.dev) console.log(lora)
-                if(!lora) return ctx.error({error: "A LORA ID from https://civitai.com/ has to be given. LoCon and LyCORIS are also acceptable.\nFor advanced usage, do not use autocomplete results, use numberic modelid or modelversionid instead:\n- To use a specific version, prefix the modelversionid with a v. eg. v12345\n- To add weights, split them with colons: 12345:1.5 for 1.5 model weight, v12345:1.5:2 for clip weight of 2.", codeblock: false})
-                if(lora.type !== "LORA" && lora.type !== "LoCon") return ctx.error({error: "The given ID is not a LORA, LoCon or LyCORIS"})
-                if(lora.modelVersions[0]?.files[0]?.sizeKB && lora.modelVersions[0]?.files[0]?.sizeKB > 225280 && !ctx.client.horde_curated_loras?.includes(lora.id)) return ctx.error({error: "The given LORA, LoCon or LyCORIS is larger than 220mb"})
+            const all_loras=(lora_raw || "").split(',');
+            for(let tlora=0; tlora < all_loras.length; tlora++){
+                const lora_in = (all_loras[tlora] || "").split(':') || []; //stupid typescript. No, it isn't possibly undefined.
+                let toadd={
+                        name: lora_in[0] || "",
+                        model: lora_in.length > 1 && lora_in[1] ? parseFloat(lora_in[1]) : 1,
+                        clip: lora_in.length > 2  && lora_in[2] ? parseFloat(lora_in[2]) : 1,
+                        is_version: false
+                }
+                if(toadd.name && toadd.name[0] =="v") {
+                    const lora = await ctx.client.fetchCivitAIModelByVersionID(parseInt(toadd.name.replace("v","")), ctx.client.config.advanced_generate.user_restrictions?.allow_nsfw)
+                    if(ctx.client.config.advanced?.dev) console.log(lora)
+                    if(!lora) return ctx.error({error: "A LORA ID from https://civitai.com/ has to be given. LoCon and LyCORIS are also acceptable.\nFor advanced usage, do not use autocomplete results, use numberic modelid or modelversionid instead:\n- To use a specific version, prefix the modelversionid with a v. eg. v12345\n- To add weights, split them with colons: 12345:1.5 for 1.5 model weight, v12345:1.5:2 for clip weight of 2.", codeblock: false})
+                    if(lora.model.type !== "LORA" && lora.model.type !== "LoCon") return ctx.error({error: "The given ID is not a LORA, LoCon or LyCORIS"})
+                    if(lora.files[0]?.sizeKB && lora.files[0]?.sizeKB > 409600) return ctx.error({error: "The given LORA, LoCon or LyCORIS is larger than 400mb"})
+                    toadd.name=toadd.name.replace("v", "")
+                    toadd.is_version=true
+                    loras.push(toadd)
+                } else if(toadd.name) {
+                    const lora = await ctx.client.fetchCivitAIModelByID(toadd.name, ctx.client.config.advanced_generate.user_restrictions?.allow_nsfw)
+                    if(ctx.client.config.advanced?.dev) console.log(lora)
+                    if(!lora) return ctx.error({error: "A LORA ID from https://civitai.com/ has to be given. LoCon and LyCORIS are also acceptable.\nFor advanced usage, do not use autocomplete results, use numberic modelid or modelversionid instead:\n- To use a specific version, prefix the modelversionid with a v. eg. v12345\n- To add weights, split them with colons: 12345:1.5 for 1.5 model weight, v12345:1.5:2 for clip weight of 2.", codeblock: false})
+                    if(lora.type !== "LORA" && lora.type !== "LoCon") return ctx.error({error: "The given ID is not a LORA, LoCon or LyCORIS"})
+                    if(lora.modelVersions[0]?.files[0]?.sizeKB && lora.modelVersions[0]?.files[0]?.sizeKB > 409600 && !ctx.client.horde_curated_loras?.includes(lora.id)) return ctx.error({error: "The given LORA, LoCon or LyCORIS is larger than 400mb"})
+                    loras.push(toadd)
+                }
             }
         }
         const lora_obj = lora_id ? [{
