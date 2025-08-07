@@ -83,6 +83,14 @@ export class AIHordeClient extends Client {
 		if(!req.status?.toString().startsWith("2")) throw new Error("Unable to fetch styles");
 		const res = await req.json()
 		this.horde_styles = res
+
+		const source2 = this.config.data_sources?.styles_source2
+		if(source2) {
+			const req2 = await fetch(source2)
+			if(!req2.status?.toString().startsWith("2")) throw new Error("Unable to fetch styles");
+			const res2 = await req2.json()
+			this.horde_styles = {...res,...res2}
+		}
 	}
 
 	async loadHordeStyleCategories() {
@@ -91,6 +99,14 @@ export class AIHordeClient extends Client {
 		if(!req.status?.toString().startsWith("2")) throw new Error("Unable to fetch style categories");
 		const res = await req.json()
 		this.horde_style_categories = res
+
+		const source2 = this.config.data_sources?.style_categories_source2
+		if(source2) {
+			const req2 = await fetch(source2)
+			if(!req2.status?.toString().startsWith("2")) throw new Error("Unable to fetch style categories");
+			const res2 = await req2.json()
+			this.horde_style_categories = {...res,...res2}
+		}
 	}
 
 	async loadHordeCuratedLORAs() {

@@ -530,5 +530,7 @@ export interface Config {
         curated_loras_source?: string
         styles_source?: string
         style_categories_source?: string,
+        styles_source2?: string
+        style_categories_source2?: string,
     }
 }
