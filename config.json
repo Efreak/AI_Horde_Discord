@@ -103,16 +103,16 @@
         "improve_loading_time": true,
         "default": {
             "tiling": false,
-            "steps": 30,
+            "steps": 4,
             "resolution": {
                 "width": 1024,
                 "height": 1024
             },
-            "cfg": 8,
+            "cfg": 1,
             "clip_skip": 1,
             "amount": 1,
-            "sampler": "k_dpmpp_2m",
-            "model": "Stabke Cascade 1.0",
+            "sampler": "k_euler",
+            "model": "Flux.1-Schnell fp8 (Compact)",
             "denoise": 50,
             "gfpgan": false,
             "real_esrgan": false,
@@ -120,7 +120,7 @@
             "share": true,
             "keep_original_ratio": true,
             "hires_fix": false,
-            "style": "cascade",
+            "style": "flux",
             "tis": ""
         },
         "source_image": {
@@ -187,7 +187,7 @@
     },
     "generate": {
         "enabled": true,
-        "require_login": true,
+        "require_login": false,
         "trusted_workers": false,
         "censor_nsfw": false,
         "replacement_filter": true,
@@ -203,7 +203,7 @@
             "amount": 1,
             "clip_skip": 1,
             "share": true,
-            "style": "cascade",
+            "style": "flux",
             "keep_original_ratio": true,
             "denoise": 50
         },
