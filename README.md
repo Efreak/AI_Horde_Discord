@@ -2,9 +2,56 @@
 
 A basic Discord bot to generate images using the AI Horde API.
 
+# Differences between this bot and upstream:
+
+- reload styles when /about is used. this is a bad hack imo, so I haven't pr'd it to upstream (*some* of the features below have been refused, others haven't been pr'd as I don't think they're likely)
+  - this really deserves its own command, but needs some way to either rate limit or require certain permissions to use it, or make it only available in specific channel.
+- supports setting a second styles and categories file that overrides or adds entries from the main styles.
+  - use this if you like Horde styles and want to be kept up to date on them, but want different aspect ratios or other parameters on some of them.
+- supports setting specific Lora version (prefix modelversionid with a *v*)
+- supports setting lora weights (add a colon before model weight, another colon before clip weight)
+- supports multiple loras (separate multiple loras with commas)
+  - this breaks autocomplete. make sure your formatting is correct!
+  - this also works with embeddings
+- the lora autocomplete includes the modelid, so you can use it directly if you want to use weights
+  - this also works with embeddings
+- style (and model) names are trimmed so if you put in a name on mobile and it automatically adds a space after the colon, autocomplete will still work.
+  - the `style:` prefix that the bot adds is also trimmed, both for autocomplete and for input, so if you copy a command before sending it'll still work when you paste it
+- interrogate accepts a URL so you don't have to download and reupload a file that you saw in discord (interrogate currently doesn't work at all as of this writing, so not much point in this)
+- doesn't require a reward. make a party in a server and pay for generations with 0 reward without sending people messages regarding horde accounts or requiring them to trust the bot with their API key.
+
+### TODO:
+
+- add a Lora search command. inspired by ketsuna.
+- consider adding trained words to the lora autocomplete.
+- trim requested model name at the first `|` character for copied commands
+- add a dedicated i2i command because the number of parameters has been fully used up and I'd like to set the image URL
+- add support for Cascade image input
+- add support for the new api-based styles feature
+- figure out a way to combine some subcommands, discord only allows 25 subcommands and those have all been used up.
+  - idea: remove hiresfix and add true (default) and false (off) to the denoising parameter.
+  - combine tis with loras and require specific prefix for tis (like modelversionid)
+  - remove seed variation and share result
+  - merge clip skip into cfg field (it's probably only being set when you set cfg anyways)
+  - merge karras into sampler
+  - these will free up up to 5 subcommands for use with other features
+  - esrganmerge gfpgan and esrgan into a new post processing parameter, this will also allow choosing all the available combinations of upscaler and face fixers.
+- add a command that takes a json object, validates it, and passes it to generate/async endpoint.
+- add seed to generation results
+- add a command for viewing styles, it would be nice to get the parameters from inside discord
+- text generation? this will have to be left to someone else, I don't know enough about it. would be very nice to have though.
+- rate limiting generation. this is a fantasy, I doubt it'll happen.
+- add support for managing shared keys (it should be pretty easy)
+- add support for putting workers in and out of maintenance (also easy)
+- add support for worker messages maybe?
+- provide a more useful error message when the API key is wrong
+
+
 **DISCLAIMER:** THIS REPOSITORY IS IN NO WAY ASSOCIATED TO THE CREATORS OF AI HORDE  
 OFFERING THIS CODE IN FORM OF A PUBLIC DISCORD BOT WHICH CAN BE INVITED BY EVERYBODY IS NOT SUPPORTED.  
 THE SCALE OF A BOT USING THIS CODE IS 1 SERVER, EVERYTHING ABOVE IS NOT SUPPORTED.  
+
+**DISCLAIMER:** THIS FORK IS UNSUPPORTED. I USE IT PERSONALLY AND CHANGE IT HOWEVER I LIKE. IT'S NOT GUARANTEED TO WORK.
 
 ## Features
 
