@@ -24,7 +24,7 @@ A basic Discord bot to generate images using the AI Horde API.
 
 - add a Lora search command. inspired by ketsuna.
 - consider adding trained words to the lora autocomplete.
-- trim requested model name at the first `|` character for copied commands
+- ~~trim requested model name at the first `|` character for copied commands~~ Done
 - add a dedicated i2i command because the number of parameters has been fully used up and I'd like to set the image URL
 - add support for Cascade image input
 - add support for the new api-based styles feature
