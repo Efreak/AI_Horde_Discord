@@ -19,6 +19,7 @@ A basic Discord bot to generate images using the AI Horde API.
   - the `style:` prefix that the bot adds is also trimmed, both for autocomplete and for input, so if you copy a command before sending it'll still work when you paste it
 - interrogate accepts a URL so you don't have to download and reupload a file that you saw in discord (interrogate currently doesn't work at all as of this writing, so not much point in this)
 - doesn't require a reward. make a party in a server and pay for generations with 0 reward without sending people messages regarding horde accounts or requiring them to trust the bot with their API key.
+- karras has been merged into the samplers list to free up a subcommand. See TODOs (more subcommands will be merged)
 
 ### TODO:
 
@@ -33,7 +34,7 @@ A basic Discord bot to generate images using the AI Horde API.
   - combine tis with loras and require specific prefix for tis (like modelversionid)
   - remove seed variation and share result
   - merge clip skip into cfg field (it's probably only being set when you set cfg anyways)
-  - merge karras into sampler
+  - ~~merge karras into sampler~~
   - these will free up up to 5 subcommands for use with other features
   - esrganmerge gfpgan and esrgan into a new post processing parameter, this will also allow choosing all the available combinations of upscaler and face fixers.
 - add a command that takes a json object, validates it, and passes it to generate/async endpoint.

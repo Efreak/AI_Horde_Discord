@@ -43,23 +43,13 @@ const command_data = new SlashCommandBuilder()
                 .setRequired(false)
             )
         }
-        if(config.advanced_generate?.user_restrictions?.allow_karras) {
-            command_data
-            .addBooleanOption(
-                new SlashCommandBooleanOption()
-                .setName("karras")
-                .setDescription("Set to True to enable karras noise scheduling tweaks")
-            )
-        }
         if(config.advanced_generate?.user_restrictions?.allow_sampler) {
             command_data
             .addStringOption(
                 new SlashCommandStringOption()
                 .setName("sampler")
                 .setDescription("The sampler to use")
-                .setChoices(
-                    ...Object.keys(ModelGenerationInputStableSamplers).map(k => ({name: k, value: k}))
-                )
+                .setAutocomplete(true)
             )
         }
         if(config.advanced_generate?.user_restrictions?.allow_cfg) {
@@ -239,7 +229,7 @@ const command_data = new SlashCommandBuilder()
     }
 
 
-    // 25 out of 25 options used(!)
+    // 24 out of 25 options used(!)
 
 function generateButtons(id: string) {
     let i = 0
@@ -278,7 +268,7 @@ export default class extends Command {
         const style = ctx.client.horde_styles[style_raw?.toLowerCase() ?? ""] || {prompt: "{p}{np}"}
 
         const negative_prompt = (ctx.client.config.advanced_generate?.user_restrictions?.enforce_negative_prompt || !ctx.interaction.options.getString("negative_prompt") && ctx.client.config.advanced_generate?.default?.negative_prompt ? ctx.client.config.advanced_generate?.default?.negative_prompt : "") + (ctx.interaction.options.getString("negative_prompt") ?? "")
-        const sampler = (ctx.interaction.options.getString("sampler") ?? ctx.client.config.advanced_generate?.default?.sampler ?? ModelGenerationInputStableSamplers.k_euler) as any
+        const sampler = (ctx.interaction.options.getString("sampler")?.split(' karras')[0] ?? ctx.client.config.advanced_generate?.default?.sampler ?? ModelGenerationInputStableSamplers.k_euler) as any
         const cfg = ctx.interaction.options.getInteger("cfg") ?? style.cfg_scale ?? ctx.client.config.advanced_generate?.default?.cfg ?? 7.5
         const denoise = (ctx.interaction.options.getInteger("denoise") ?? ctx.client.config.advanced_generate?.default?.denoise ?? 50)/100
         const seed = ctx.interaction.options.getString("seed")
@@ -292,7 +282,7 @@ export default class extends Command {
         let width = ctx.interaction.options.getInteger("width") ?? style?.width ?? ctx.client.config.advanced_generate?.default?.resolution?.width ?? 512
         const model = ctx.interaction.options.getString("model")?.split(' | ')[0] ?? style?.model ?? ctx.client.config.advanced_generate?.default?.model
         const keep_ratio = ctx.interaction.options.getBoolean("keep_original_ratio") ?? ctx.client.config.advanced_generate?.default?.keep_original_ratio ?? true
-        const karras = ctx.interaction.options.getBoolean("karras") ?? ctx.client.config.advanced_generate?.default?.karras ?? false
+        const karras = ctx.interaction.options.getString("sampler")?.includes("karras") ?? false
         const share_result = ctx.interaction.options.getBoolean("share_result") ?? ctx.client.config.advanced_generate?.default?.share
         const lora_raw = ctx.interaction.options.getString("lora")
         const ti_raw = ctx.interaction.options.getString("textual_inversion") ?? ctx.client.config.advanced_generate.default?.tis
@@ -695,6 +685,12 @@ ETA: <t:${Math.floor(Date.now()/1000)+(status?.wait_time ?? 0)}:R>`
                 const steps = Array.from({length: 3072/64}).map((_, i) => ({name: `${(i+1)*64}px${(i+1)*64 > 1024 ? " (Requires Kudos upfront)" : ""}`, value: (i+1)*64})).filter(v => v.value >= (context.client.config.advanced_generate?.user_restrictions?.height?.min ?? 64) && v.value <= (context.client.config.advanced_generate?.user_restrictions?.height?.max ?? 3072))
                 const inp = context.interaction.options.getFocused(true)
                 return await context.interaction.respond(steps.filter((v) => !inp.value || v.name.includes(inp.value)).slice(0,25))
+            }
+            case "sampler": {
+                const samplers = Object.keys(ModelGenerationInputStableSamplers).map(k => [{ name: k, value: k }, { name: `${k} karras`, value: `${k} karras` }]).flat()
+                const available = samplers.sort((a, b) => a.name.endsWith(' karras') === true ? 1 : b.name.endsWith(' karras') === true ? -1 : 0)
+                const ret = option.value ? available.filter(s => s.name.toLowerCase().includes(option.value.toLowerCase().trim())) : available
+                return await context.interaction.respond(ret.slice(0,25))
             }
             case "style": {
                 const styles = Object.keys(context.client.horde_styles)
