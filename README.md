@@ -20,6 +20,7 @@ A basic Discord bot to generate images using the AI Horde API.
 - interrogate accepts a URL so you don't have to download and reupload a file that you saw in discord (interrogate currently doesn't work at all as of this writing, so not much point in this)
 - doesn't require a reward. make a party in a server and pay for generations with 0 reward without sending people messages regarding horde accounts or requiring them to trust the bot with their API key.
 - karras has been merged into the samplers list to free up a subcommand. See TODOs (more subcommands will be merged)
+- advanced_generate command has a nsfw option. NSFW can only be generated if it's enabled in the config (user_restrictions) and the channel is marked as nsfw. generate command will be similarly restricted eventually.
 
 ### TODO:
 
@@ -46,7 +47,7 @@ A basic Discord bot to generate images using the AI Horde API.
 - add support for putting workers in and out of maintenance (also easy)
 - add support for worker messages maybe?
 - provide a more useful error message when the API key is wrong
-
+- when nsfw is set on /generate command, only set nsfw results as such when in an nsfw channel
 
 **DISCLAIMER:** THIS REPOSITORY IS IN NO WAY ASSOCIATED TO THE CREATORS OF AI HORDE  
 OFFERING THIS CODE IN FORM OF A PUBLIC DISCORD BOT WHICH CAN BE INVITED BY EVERYBODY IS NOT SUPPORTED.  

@@ -226,10 +226,18 @@ const command_data = new SlashCommandBuilder()
                 .setMaxValue(12)
             )
         }
+        if(config.advanced_generate?.user_restrictions?.allow_nsfw) {
+            command_data
+            .addBooleanOption(
+                new SlashCommandBooleanOption()
+                .setName("nsfw")
+                .setDescription("Setting false to include workers that censor NSFW. May return images faster.")
+            )
+        }
     }
 
 
-    // 24 out of 25 options used(!)
+    // 25 out of 25 options used(!)
 
 function generateButtons(id: string) {
     let i = 0
@@ -338,6 +346,7 @@ export default class extends Command {
         if(img && !can_bypass && !user_token) return ctx.error({error: `You need to ${await ctx.client.getSlashCommandTag("login")} and agree to our ${await ctx.client.getSlashCommandTag("terms")} first before being able to use a source image`, codeblock: false})
         if(img && ctx.client.config.advanced_generate?.source_image?.require_ai_horde_account_oauth_connection && (!ai_horde_user || ai_horde_user.pseudonymous)) return ctx.error({error: "Your ai horde account needs to be created with a oauth connection"})
         if(img && !can_bypass && ctx.client.config.advanced_generate?.source_image?.require_nsfw_channel && (ctx.interaction.channel?.type !== ChannelType.GuildText || !ctx.interaction.channel.nsfw)) return ctx.error({error: "This channel needs to be marked as age restricted to use a source image"})
+        if(!can_bypass && ctx.interaction.options.getBoolean("nsfw") && (ctx.interaction.channel?.type !== ChannelType.GuildText || !ctx.interaction.channel.nsfw)) return ctx.error({error: "This channel needs to be marked as age restricted to use NSFW workers"})
         if(img && !img.contentType?.startsWith("image/")) return ctx.error({error: "Source Image input must be a image"})
         if(img && ((img.height ?? 0) > 3072 || (img.width ?? 0) > 3072)) return ctx.error({error: "Source Image input too large (max. 3072 x 3072)"})
         if(img && !can_bypass && !ctx.client.config?.advanced_generate?.source_image?.allow_non_webp && img.contentType !== "image/webp") return ctx.error({error: "You can only upload webp as the source image"})
@@ -427,7 +436,7 @@ export default class extends Command {
                 extra_texts: qr_code_url ? [{text: qr_code_url, reference: "qr_code"}] : undefined
             },
             replacement_filter: ctx.client.config.advanced_generate.replacement_filter,
-            nsfw: ctx.client.config.advanced_generate?.user_restrictions?.allow_nsfw,
+            nsfw: ctx.interaction.options.getBoolean("nsfw") ? true : false,
             censor_nsfw: ctx.client.config.advanced_generate?.censor_nsfw,
             trusted_workers: ctx.client.config.advanced_generate?.trusted_workers,
             workers: ctx.client.config.advanced_generate?.workers,
