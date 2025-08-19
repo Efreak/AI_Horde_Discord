@@ -1,3 +1,4 @@
+require('console-stamp')(console)
 import {readFileSync} from "fs"
 import {ActivityType, ApplicationCommandType, InteractionType, PartialMessageReaction, Partials, PartialUser, PresenceUpdateStatus} from "discord.js";
 import { AIHordeClient } from "./classes/client";
