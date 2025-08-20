@@ -239,7 +239,7 @@ export default class extends Command {
                 extra_texts: qr_code_url ? [{text: qr_code_url, reference: "qr_code"}] : undefined
             },
             replacement_filter: ctx.client.config.generate.replacement_filter,
-            nsfw: ctx.client.config.generate?.user_restrictions?.allow_nsfw,
+            nsfw: ctx.client.config.generate?.user_restrictions?.allow_nsfw && ctx.interaction.channel.nsfw ? true : false,
             censor_nsfw: ctx.client.config.generate?.censor_nsfw,
             trusted_workers: ctx.client.config.generate?.trusted_workers,
             models: style.model ? [style.model] : undefined,
