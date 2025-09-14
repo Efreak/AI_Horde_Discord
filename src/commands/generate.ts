@@ -153,6 +153,9 @@ export default class extends Command {
         const user_token = await ctx.client.getUserToken(ctx.interaction.user.id, ctx.database)
         const ai_horde_user = await ctx.ai_horde_manager.findUser({token: user_token  || ctx.client.config?.default_token || "0000000000"}).catch((e) => ctx.client.config.advanced?.dev ? console.error(e) : null);
         const can_bypass = ctx.client.config.generate?.source_image?.whitelist?.bypass_checks && ctx.client.config.generate?.source_image?.whitelist?.user_ids?.includes(ctx.interaction.user.id)
+        const nsfw = !can_bypass && ctx.client.config.generate?.user_restrictions?.allow_nsfw && (ctx.interaction.channel?.type !== ChannelType.GuildText || !ctx.interaction.channel.nsfw) ? false : true
+        // censor in sfw channels. this can't be bypassed.
+        const censor = (!can_bypass && ctx.client.config.generate?.censor_nsfw) || ctx.interaction.channel?.type !== ChannelType.GuildText || !ctx.interaction.channel.nsfw
 
         if(!style?.prompt?.length) return ctx.error({error: "Unable to find style for input"})
         if(party?.style && party.style !== style_raw.toLowerCase()) return ctx.error({error: `Please use the style '${party.style}' for this party`})
@@ -239,8 +242,8 @@ export default class extends Command {
                 extra_texts: qr_code_url ? [{text: qr_code_url, reference: "qr_code"}] : undefined
             },
             replacement_filter: ctx.client.config.generate.replacement_filter,
-            nsfw: ctx.client.config.generate?.user_restrictions?.allow_nsfw && ctx.interaction.channel.nsfw ? true : false,
-            censor_nsfw: ctx.client.config.generate?.censor_nsfw,
+            nsfw: nsfw,
+            censor_nsfw: censor,
             trusted_workers: ctx.client.config.generate?.trusted_workers,
             models: style.model ? [style.model] : undefined,
             source_image: img_data?.toString("base64"),
