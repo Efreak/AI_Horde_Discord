@@ -633,12 +633,16 @@ ETA: <t:${Math.floor(Date.now()/1000)+(status?.wait_time ?? 0)}:R>`
                     const files = image_map.filter(i => i.attachment).map(i => i.attachment) as  AttachmentBuilder[]
                     if(img_data && image_map.length < 10) files.push(new AttachmentBuilder(img_data, {name: "original.webp"}))
                     let components = [{type: 1, components: [delete_btn]}]
+                    const seeds = images?.generations?.map(gen => {
+                        const bindex = gen.gen_metadata?.filter(m => m.type=="batch_index")[0]?.ref ?? undefined;
+                        return gen.seed + (bindex ? '#'+bindex :'')
+                    }).join(', ')
                     const embeds = [
                         new EmbedBuilder({
                             title: "Generation Finished",
                             description: `**Prompt** ${prompt}\n**Style** ${style_raw}\n**Kudos Consumed** \`${images.kudos}\`${image_map.length !== amount ? "\nCensored Images are not displayed" : ""}`,
                             color: Colors.Blue,
-                            footer: {text: `Generation ID ${generation_start!.id}`},
+                            footer: {text: `Generation ID ${generation_start!.id}\nSeeds: ${seeds}`},
                             thumbnail: img_data && image_map.length < 10 ? {url: "attachment://original.webp"} : img_data ? {url: img!.url} : undefined
                         })
                     ]
